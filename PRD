@@ -1,0 +1,431 @@
+📘 Product Requirements Document (PRD)
+Product Name: Kulmis Academy
+1. Product Overview
+
+Kulmis Academy is a modern, AI-enhanced Learning Management System (LMS) designed for individual ownership (single admin model). The platform delivers high-quality technology and AI-focused courses to students globally, with a Free and Pro subscription model.
+
+The system will be built using:
+
+Next.js (Fullstack framework)
+
+Tailwind CSS (Neon UI design system)
+
+Sanity (Headless CMS for course content)
+
+PostgreSQL (User & subscription data)
+
+Stripe (Subscription payments)
+
+Clerk (Authentication)
+
+Hosted on Vercel
+
+The platform will prioritize:
+
+Clean architecture
+
+High performance
+
+Modern neon UI aesthetic
+
+Scalable SaaS-ready structure
+
+2. Product Vision
+
+To build a visually stunning, high-performance digital learning platform that empowers Somali and global learners to master technology, AI, and modern development skills.
+
+Kulmis Academy should feel:
+
+Futuristic
+
+Professional
+
+Minimal
+
+Neon-accented
+
+Fast and smooth
+
+3. Target Users
+Primary Users
+
+Students interested in:
+
+Web Development
+
+AI & Machine Learning
+
+Vibe Coding
+
+Software Engineering
+
+Admin
+
+Single platform owner
+
+Full control over courses and revenue
+
+No instructor accounts
+
+4. Core Features
+4.1 Authentication System
+
+Using Clerk:
+
+Email/password signup
+
+Google OAuth login
+
+Secure sessions
+
+Role-based access:
+
+Admin
+
+Student
+
+4.2 Subscription Model
+Free Plan
+
+Limited course access
+
+No certificate downloads
+
+No premium resources
+
+Basic dashboard access
+
+Pro Plan
+
+Full course access
+
+Downloadable resources
+
+Certificates
+
+Priority updates
+
+Future premium features
+
+Stripe Integration:
+
+Monthly subscription
+
+Annual subscription
+
+Webhook handling
+
+Auto renewal
+
+Cancel anytime
+
+4.3 Course Management (Admin Only)
+
+Managed via Sanity CMS.
+
+Admin can:
+
+Create course
+
+Edit course
+
+Delete course
+
+Add lessons
+
+Upload video links
+
+Upload resources (PDF, ZIP)
+
+Set course visibility (Free/Pro)
+
+Course Schema:
+
+Course:
+
+Title
+
+Slug
+
+Description
+
+Thumbnail
+
+Category
+
+Level
+
+Price (if needed)
+
+Access type (Free or Pro)
+
+Lessons (array)
+
+Lesson:
+
+Title
+
+Video URL
+
+Description
+
+Resources
+
+Order number
+
+4.4 Student Dashboard
+
+Features:
+
+Enrolled courses
+
+Continue watching
+
+Progress tracking
+
+Subscription status
+
+Upgrade to Pro button
+
+Profile settings
+
+4.5 Progress Tracking
+
+Stored in PostgreSQL:
+
+user_id
+
+course_id
+
+lesson_id
+
+completion_status
+
+last_watched_timestamp
+
+Features:
+
+Auto-save progress
+
+Resume where you left off
+
+Course completion percentage
+
+4.6 Admin Dashboard
+
+Admin-only protected route.
+
+Features:
+
+Total users
+
+Active Pro subscriptions
+
+Revenue summary
+
+Course list
+
+Create/edit/delete courses
+
+View subscription analytics
+
+5. UI/UX Requirements
+Design Theme
+
+Kulmis Academy must have:
+
+Dark mode default
+
+Neon color accents
+
+Futuristic tech style
+
+Glassmorphism elements
+
+Smooth animations
+
+Clean typography
+
+Color System (Neon Theme)
+
+Primary background:
+
+Deep black (#0B0F1A)
+
+Dark navy gradient
+
+Neon accents:
+
+Neon Blue (#00F0FF)
+
+Neon Purple (#A020F0)
+
+Neon Pink (#FF2D95)
+
+Buttons:
+
+Glow effect on hover
+
+Subtle shadow blur
+
+Smooth transition (300ms)
+
+Layout Sections
+
+Landing Page:
+
+Hero section with bold headline
+
+CTA button (Start Learning)
+
+Feature section
+
+Pricing section (Free vs Pro)
+
+Course preview grid
+
+Footer
+
+Dashboard:
+
+Sidebar navigation
+
+Course cards
+
+Progress bars
+
+Subscription badge
+
+6. System Architecture
+
+Frontend:
+
+Next.js App Router
+
+Server Components
+
+API routes for Stripe
+
+CMS:
+
+Sanity (Content only)
+
+Authentication:
+
+Clerk
+
+Database:
+
+PostgreSQL (via Prisma ORM)
+
+Payments:
+
+Stripe subscriptions
+
+Webhook endpoint
+
+Hosting:
+
+Vercel
+
+7. Technical Requirements
+
+Performance:
+
+Lighthouse score above 90
+
+Optimized images
+
+Lazy loading videos
+
+Security:
+
+Protected API routes
+
+Admin-only route guard
+
+Secure Stripe webhook verification
+
+Scalability:
+
+Modular folder structure
+
+Clean separation of concerns
+
+Environment variable management
+
+8. Folder Structure (Recommended)
+/app
+  /dashboard
+  /admin
+  /courses
+  /api
+/lib
+  /stripe
+  /db
+  /auth
+/schemas (Sanity)
+/components
+9. Future Enhancements (Phase 2)
+
+AI course recommendation system
+
+AI chatbot tutor
+
+Gamification (badges, XP points)
+
+Leaderboard
+
+Community discussion system
+
+Mobile app version
+
+10. MVP Scope (First Release)
+
+For initial launch, include:
+
+Authentication
+
+Course display
+
+Video playback
+
+Stripe subscription
+
+Free vs Pro restriction
+
+Admin course management
+
+Basic dashboard
+
+No:
+
+Certificates (optional phase 2)
+
+Community forum
+
+AI tutor (later phase)
+
+11. Success Metrics
+
+1,000 registered users in 3 months
+
+10% Pro conversion rate
+
+Stable performance under 5,000 concurrent users
+
+12. Development Approach Using AI Agent (Cursor)
+
+You will:
+
+Feed this PRD into Cursor AI
+
+Build feature by feature
+
+Generate code in modules
+
+Review architecture carefully
+
+Never generate entire system at once
+
+Implement incrementally

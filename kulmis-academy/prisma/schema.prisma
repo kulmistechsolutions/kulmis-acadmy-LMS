@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String?  // hashed; null if OAuth-only in future
+  role      String   @default("student") // "student" | "admin"
+  isPro     Boolean  @default(false)     // set when admin approves a request
+  phone     String?  // mobile number (visible to admin)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  requests       StudentRequest[]
+  progress       UserProgress[]
+  certificates   Certificate[]
+  lessonDownloads LessonDownload[]
+}
+
+model LessonDownload {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId     String   // Sanity course _id
+  lessonIndex  Int      // 0-based index
+  downloadedAt DateTime @default(now())
+
+  @@index([userId, courseId, lessonIndex])
+  @@index([courseId, lessonIndex])
+}
+
+model Certificate {
+  id               String   @id @default(cuid())
+  certificateId    String   @unique // UUID for verification URL
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId         String   // Sanity course _id
+  courseTitle      String
+  fullName         String
+  studentId        String?
+  completionDate   DateTime
+  createdAt        DateTime @default(now())
+
+  @@index([userId, courseId])
+  @@index([certificateId])
+}
+
+model UserProgress {
+  id                 String   @id @default(cuid())
+  userId             String
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId           String   // Sanity course _id
+  lessonIndex        Int      // 0-based index in course.lessons
+  completed          Boolean  @default(false)
+  lastPositionSeconds Int     @default(0) // resume position
+  updatedAt          DateTime @updatedAt
+
+  @@unique([userId, courseId, lessonIndex])
+  @@index([userId, courseId])
+}
+
+model StudentRequest {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type           String   @default("PRO_ACCESS")
+  status         String   @default("PENDING")    // PENDING | APPROVED | REJECTED
+  message        String?  // optional note from student
+  fullName       String?  // Pro upgrade: full name
+  phone          String?  // Pro upgrade: phone
+  paymentNumber  String?  // Pro upgrade: payment number used
+  proofImageUrl  String?  // Pro upgrade: uploaded proof image path/URL
+  reviewedAt     DateTime?
+  reviewedBy     String?
+  adminNote      String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model VisitorSession {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  path      String?  // optional path for page-level analytics
+  durationSeconds Int?  // optional session duration
+
+  @@index([createdAt])
+}
