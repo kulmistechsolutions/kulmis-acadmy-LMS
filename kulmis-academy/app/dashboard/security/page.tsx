@@ -52,7 +52,7 @@ export default function SecurityPage() {
   }
 
   return (
-    <Page title="Security" description="Change your password">
+    <Page title="Security" subtitle="Change your password">
       <div className="mx-auto max-w-md">
         <h2 className="text-lg font-semibold text-[var(--foreground)]">Change password</h2>
         <p className="mt-1 text-sm text-[var(--muted)]">
