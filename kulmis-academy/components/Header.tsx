@@ -56,7 +56,7 @@ export function Header() {
               </Link>
               <button
                 type="button"
-                onClick={() => signOut({ callbackUrl: "/" })}
+                onClick={() => signOut({ redirect: false }).then(() => { window.location.href = "/"; })}
                 className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm font-medium text-[var(--foreground)] hover:border-[var(--primary)] hover:text-[var(--primary)]"
               >
                 Sign out
@@ -86,7 +86,7 @@ export function Header() {
           {isSignedIn && (
             <button
               type="button"
-              onClick={() => signOut({ callbackUrl: "/" })}
+              onClick={() => signOut({ redirect: false }).then(() => { window.location.href = "/"; })}
               className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm font-medium text-[var(--foreground)]"
             >
               Sign out

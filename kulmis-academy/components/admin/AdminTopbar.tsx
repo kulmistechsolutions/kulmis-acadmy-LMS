@@ -46,7 +46,7 @@ export function AdminTopbar({ adminEmail }: AdminTopbarProps) {
               <p className="truncate px-2 py-1 text-xs text-[var(--muted)]">{adminEmail}</p>
               <button
                 type="button"
-                onClick={() => signOut({ callbackUrl: "/" })}
+                onClick={() => signOut({ redirect: false }).then(() => { window.location.href = "/"; })}
                 className="w-full rounded-lg px-3 py-2 text-left text-sm text-[var(--foreground)] hover:bg-[var(--background)]/80"
               >
                 Sign out
