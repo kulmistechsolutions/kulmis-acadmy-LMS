@@ -10,6 +10,11 @@ export const dynamic = "force-dynamic";
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.VERCEL_URL || "http://localhost:3000";
 const origin = baseUrl.startsWith("http") ? baseUrl : `https://${baseUrl}`;
+const canonicalOrigin = process.env.NEXT_PUBLIC_APP_URL
+  ? (process.env.NEXT_PUBLIC_APP_URL.startsWith("http")
+      ? process.env.NEXT_PUBLIC_APP_URL
+      : `https://${process.env.NEXT_PUBLIC_APP_URL}`)
+  : origin;
 
 export default async function DashboardCertificatesPage() {
   const user = await getCurrentUser();
@@ -54,7 +59,7 @@ export default async function DashboardCertificatesPage() {
               month: "long",
               day: "numeric",
             });
-            const verifyUrl = `${origin}/verify/${cert.certificateId}`;
+            const verifyUrl = `${canonicalOrigin}/verify/${cert.certificateId}`;
             return (
               <div
                 key={cert.id}

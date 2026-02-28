@@ -51,9 +51,18 @@ export default async function VerifyPage({
     day: "numeric",
   });
 
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.VERCEL_URL || "http://localhost:3000";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL ||
+    (typeof process.env.VERCEL_URL === "string" && process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000");
   const origin = baseUrl.startsWith("http") ? baseUrl : `https://${baseUrl}`;
   const verifyUrl = `${origin}/verify/${cert.certificateId}`;
+  const canonicalDomain = process.env.NEXT_PUBLIC_APP_URL
+    ? (process.env.NEXT_PUBLIC_APP_URL.startsWith("http")
+        ? process.env.NEXT_PUBLIC_APP_URL
+        : `https://${process.env.NEXT_PUBLIC_APP_URL}`)
+    : null;
 
   return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
@@ -126,7 +135,9 @@ export default async function VerifyPage({
                 </div>
                 <div>
                   <dt className="text-xs font-medium uppercase tracking-wide text-[var(--muted)]">Verification Link</dt>
-                  <dd className="mt-1 break-all font-mono text-sm text-[var(--primary)]">{verifyUrl}</dd>
+                  <dd className="mt-1 break-all font-mono text-sm text-[var(--primary)]">
+                    {canonicalDomain ? `${canonicalDomain}/verify/${cert.certificateId}` : verifyUrl}
+                  </dd>
                 </div>
               </dl>
             </div>
