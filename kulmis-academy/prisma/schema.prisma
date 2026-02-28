@@ -17,10 +17,11 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  requests       StudentRequest[]
-  progress       UserProgress[]
-  certificates   Certificate[]
-  lessonDownloads LessonDownload[]
+  requests            StudentRequest[]
+  progress            UserProgress[]
+  certificates        Certificate[]
+  lessonDownloads     LessonDownload[]
+  passwordResetTokens PasswordResetToken[]
 }
 
 model LessonDownload {
@@ -94,4 +95,17 @@ model VisitorSession {
   durationSeconds Int?  // optional session duration
 
   @@index([createdAt])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique // cryptographically secure, single-use
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([token])
+  @@index([expiresAt])
 }

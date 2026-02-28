@@ -86,6 +86,11 @@ function SignInForm() {
           {error && (
             <p className="text-sm text-[var(--tertiary)]">{error}</p>
           )}
+          <p className="text-center text-sm text-[var(--muted)]">
+            <Link href="/forgot-password" className="font-medium text-[var(--primary)] hover:underline">
+              Forgot your password?
+            </Link>
+          </p>
           <button
             type="submit"
             disabled={loading}

@@ -23,6 +23,9 @@ export function DashboardSidebar({ isAdmin }: DashboardSidebarProps) {
       <Link href="/dashboard/certificates" className={linkClass} onClick={() => setOpen(false)}>
         My Certificates
       </Link>
+      <Link href="/dashboard/security" className={linkClass} onClick={() => setOpen(false)}>
+        Security
+      </Link>
       <Link href="/dashboard" className={linkClass} onClick={() => setOpen(false)}>
         Profile
       </Link>

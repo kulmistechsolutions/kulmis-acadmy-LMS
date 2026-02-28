@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const publicPaths = ["/", "/sign-in", "/sign-up", "/verify", "/api/health", "/api/verify"];
+const publicPaths = ["/", "/sign-in", "/sign-up", "/forgot-password", "/reset-password", "/verify", "/api/health", "/api/verify"];
 const authPrefix = "/api/auth";
 
 function isPublic(pathname: string): boolean {
@@ -10,6 +10,7 @@ function isPublic(pathname: string): boolean {
   if (pathname.startsWith("/api/health")) return true;
   if (pathname.startsWith(authPrefix)) return true;
   if (pathname === "/" || pathname === "/sign-in" || pathname === "/sign-up") return true;
+  if (pathname === "/forgot-password" || pathname === "/reset-password") return true;
   return false;
 }
 

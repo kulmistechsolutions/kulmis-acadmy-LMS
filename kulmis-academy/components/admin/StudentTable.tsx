@@ -14,6 +14,66 @@ type UserRow = {
 
 const PAGE_SIZE = 10;
 
+function ResetPasswordDropdown({
+  userId,
+  userEmail,
+  onDone,
+}: {
+  userId: string;
+  userEmail: string;
+  onDone: () => void;
+}) {
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+
+  async function handleAction(action: "send_email" | "force_temp") {
+    setLoading(true);
+    setMessage(null);
+    try {
+      const res = await fetch("/api/admin/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, action }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        setMessage(data.message ?? "Done.");
+        onDone();
+      } else {
+        setMessage(data.error ?? "Failed.");
+      }
+    } catch {
+      setMessage("Network error.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="relative">
+      <select
+        disabled={loading}
+        className="rounded-lg border border-[var(--border)] bg-[var(--background)] px-2 py-1 text-xs text-[var(--foreground)] focus:border-[var(--primary)] focus:outline-none disabled:opacity-50"
+        value=""
+        onChange={(e) => {
+          const v = e.target.value as "send_email" | "force_temp" | "";
+          if (v) handleAction(v);
+          e.target.value = "";
+        }}
+      >
+        <option value="">Reset password…</option>
+        <option value="send_email">Send reset email</option>
+        <option value="force_temp">Set temporary password</option>
+      </select>
+      {message && (
+        <p className="absolute left-0 top-full z-10 mt-1 max-w-[200px] rounded border border-[var(--border)] bg-[var(--surface)] px-2 py-1 text-xs text-[var(--foreground)] shadow">
+          {message}
+        </p>
+      )}
+    </div>
+  );
+}
+
 export function StudentTable({ users }: { users: UserRow[] }) {
   const [search, setSearch] = useState("");
   const [planFilter, setPlanFilter] = useState<"all" | "free" | "pro">("all");
@@ -78,6 +138,7 @@ export function StudentTable({ users }: { users: UserRow[] }) {
               <th className="px-4 py-3 font-medium text-[var(--foreground)]">Plan</th>
               <th className="px-4 py-3 font-medium text-[var(--foreground)]">Requests</th>
               <th className="px-4 py-3 font-medium text-[var(--foreground)]">Joined</th>
+              <th className="px-4 py-3 font-medium text-[var(--foreground)]">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -108,6 +169,15 @@ export function StudentTable({ users }: { users: UserRow[] }) {
                 </td>
                 <td className="px-4 py-3 text-[var(--muted)]">{u._count.requests}</td>
                 <td className="px-4 py-3 text-[var(--muted)]">{new Date(u.createdAt).toLocaleDateString()}</td>
+                <td className="px-4 py-3">
+                  {u.role !== "admin" && (
+                    <ResetPasswordDropdown
+                      userId={u.id}
+                      userEmail={u.email}
+                      onDone={() => {}}
+                    />
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
